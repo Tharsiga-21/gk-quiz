@@ -1,38 +1,22 @@
-/* ============================================
-   style.css — BrainSpark GK Quiz Styles
-   DecodeLabs Frontend Internship · Project 3
-   ============================================ */
-
-
-/* ─────────────────────────────────────────────
-   1. CSS VARIABLES (Theme System)
-   We define color "tokens" here so we can
-   switch between light and dark by just
-   changing these values. Every color in the
-   app uses these variables — never hardcoded.
-───────────────────────────────────────────── */
-
-/* Light theme — applied by default */
 :root {
-  --bg: #F0EDE6;           /* Page background */
-  --surface: #FFFFFF;      /* Card background */
-  --surface2: #F7F4EF;     /* Option button background */
-  --border: #E2DDD6;       /* Border color */
-  --text: #1A1714;         /* Main text */
-  --text-muted: #7A7570;   /* Lighter/secondary text */
-  --accent: #E8431A;       /* Primary accent (orange-red) */
-  --accent2: #2D6BE4;      /* Secondary accent (blue) */
-  --correct: #1E8A4A;      /* Green for correct answer */
-  --wrong: #D63B2F;        /* Red for wrong answer */
-  --correct-bg: #E8F7EE;   /* Light green background */
-  --wrong-bg: #FDECEA;     /* Light red background */
+  --bg: #F0EDE6;
+  --surface: #FFFFFF;
+  --surface2: #F7F4EF;
+  --border: #E2DDD6;
+  --text: #1A1714;
+  --text-muted: #7A7570;
+  --accent: #E8431A;
+  --accent2: #2D6BE4;
+  --correct: #1E8A4A;
+  --wrong: #D63B2F;
+  --correct-bg: #E8F7EE;
+  --wrong-bg: #FDECEA;
   --shadow: 0 4px 24px rgba(0,0,0,0.08);
   --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
   --radius: 16px;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dark theme — applied when HTML has data-theme="dark" */
 [data-theme="dark"] {
   --bg: #111110;
   --surface: #1C1B1A;
@@ -50,16 +34,8 @@
   --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
 }
 
-
-/* ─────────────────────────────────────────────
-   2. RESET & BASE STYLES
-   Remove browser default margins/padding.
-   Set box-sizing so padding is included in
-   element width calculations.
-───────────────────────────────────────────── */
-
 *, *::before, *::after {
-  box-sizing: border-box; /* width includes padding & border */
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -68,25 +44,19 @@ body {
   font-family: 'Space Grotesk', sans-serif;
   background: var(--bg);
   color: var(--text);
-  min-height: 100vh;          /* Full screen height */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;        /* Center everything horizontally */
+  align-items: center;
   padding: 24px 16px 48px;
   transition: background var(--transition), color var(--transition);
-  /* transition makes dark/light switch smooth */
 }
-
-
-/* ─────────────────────────────────────────────
-   3. HEADER
-───────────────────────────────────────────── */
 
 header {
   width: 100%;
-  max-width: 680px;           /* Never wider than 680px */
+  max-width: 680px;
   display: flex;
-  justify-content: space-between; /* Logo left, toggle right */
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
 }
@@ -99,14 +69,13 @@ header {
 }
 
 .logo span {
-  color: var(--accent); /* "Spark" part is colored */
+  color: var(--accent);
 }
 
-/* Dark/Light toggle button */
 .theme-toggle {
   background: var(--surface);
   border: 1.5px solid var(--border);
-  border-radius: 100px;       /* Pill shape */
+  border-radius: 100px;
   padding: 8px 16px;
   cursor: pointer;
   font-family: 'Space Grotesk', sans-serif;
@@ -129,15 +98,9 @@ header {
   transition: transform 0.4s;
 }
 
-/* Rotate the sun/moon icon when dark mode is on */
 [data-theme="dark"] .toggle-icon {
   transform: rotate(180deg);
 }
-
-
-/* ─────────────────────────────────────────────
-   4. MAIN CARD
-───────────────────────────────────────────── */
 
 .card {
   width: 100%;
@@ -146,33 +109,21 @@ header {
   border-radius: 24px;
   border: 1.5px solid var(--border);
   box-shadow: var(--shadow-lg);
-  overflow: hidden;           /* Clips progress bar corners */
+  overflow: hidden;
   transition: background var(--transition), border-color var(--transition);
 }
 
-
-/* ─────────────────────────────────────────────
-   5. PROGRESS BAR
-   Shows how far through the quiz you are.
-───────────────────────────────────────────── */
-
 .progress-wrap {
   height: 4px;
-  background: var(--border);  /* The grey track behind the bar */
+  background: var(--border);
 }
 
 .progress-bar {
   height: 100%;
   background: linear-gradient(90deg, var(--accent), var(--accent2));
   transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  /* width is set by JavaScript to show progress */
   width: 0%;
 }
-
-
-/* ─────────────────────────────────────────────
-   6. QUIZ META (Question counter + Score badge)
-───────────────────────────────────────────── */
 
 .quiz-meta {
   display: flex;
@@ -206,11 +157,6 @@ header {
   font-family: 'Share Tech Mono', monospace;
 }
 
-
-/* ─────────────────────────────────────────────
-   7. QUESTION TEXT
-───────────────────────────────────────────── */
-
 .question-area {
   padding: 24px 28px 20px;
 }
@@ -221,19 +167,13 @@ header {
   font-weight: 700;
   line-height: 1.4;
   color: var(--text);
-  min-height: 3.5rem; /* Prevents layout jumping between short/long questions */
+  min-height: 3.5rem;
 }
-
-
-/* ─────────────────────────────────────────────
-   8. OPTION BUTTONS
-   Each answer choice is a styled <button>.
-───────────────────────────────────────────── */
 
 .options {
   padding: 0 28px 28px;
   display: flex;
-  flex-direction: column; /* Stack options vertically */
+  flex-direction: column;
   gap: 10px;
 }
 
@@ -255,14 +195,12 @@ header {
   overflow: hidden;
 }
 
-/* Hover effect — slide right slightly */
 .option-btn:hover:not(:disabled) {
   border-color: var(--accent);
   transform: translateX(4px);
   box-shadow: var(--shadow);
 }
 
-/* The A / B / C / D label box */
 .option-label {
   width: 28px;
   height: 28px;
@@ -274,17 +212,15 @@ header {
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.75rem;
   font-weight: 700;
-  flex-shrink: 0;   /* Don't let it shrink */
+  flex-shrink: 0;
   transition: all 0.2s;
 }
 
-/* Label turns accent color on hover */
 .option-btn:hover:not(:disabled) .option-label {
   background: var(--accent);
   color: white;
 }
 
-/* GREEN — correct answer selected */
 .option-btn.correct {
   background: var(--correct-bg);
   border-color: var(--correct);
@@ -297,7 +233,6 @@ header {
   color: white;
 }
 
-/* RED — wrong answer selected */
 .option-btn.wrong {
   background: var(--wrong-bg);
   border-color: var(--wrong);
@@ -309,17 +244,10 @@ header {
   color: white;
 }
 
-/* After answering, disable all buttons */
 .option-btn:disabled {
   cursor: default;
   transform: none !important;
 }
-
-
-/* ─────────────────────────────────────────────
-   9. FEEDBACK BAR
-   Shows "Correct!" or "Wrong! The answer is X"
-───────────────────────────────────────────── */
 
 .feedback {
   margin: 0 28px 20px;
@@ -327,12 +255,11 @@ header {
   border-radius: 12px;
   font-size: 0.9rem;
   font-weight: 500;
-  display: none;          /* Hidden by default */
+  display: none;
   align-items: center;
   gap: 8px;
 }
 
-/* JavaScript adds .show to make it visible */
 .feedback.show {
   display: flex;
   animation: slideIn 0.3s ease;
@@ -350,20 +277,14 @@ header {
   border: 1px solid var(--wrong);
 }
 
-/* Slide down animation when feedback appears */
 @keyframes slideIn {
   from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-
-/* ─────────────────────────────────────────────
-   10. NEXT BUTTON
-───────────────────────────────────────────── */
-
 .next-wrap {
   padding: 0 28px 28px;
-  display: none; /* Hidden until answer is selected */
+  display: none;
 }
 
 .next-wrap.show {
@@ -393,11 +314,6 @@ header {
   transform: translateY(-1px);
   box-shadow: var(--shadow);
 }
-
-
-/* ─────────────────────────────────────────────
-   11. INTRO SCREEN
-───────────────────────────────────────────── */
 
 #intro-screen {
   padding: 48px 28px;
@@ -461,11 +377,6 @@ header {
   box-shadow: var(--shadow-lg);
 }
 
-
-/* ─────────────────────────────────────────────
-   12. RESULT SCREEN
-───────────────────────────────────────────── */
-
 #result-screen {
   display: none;
   padding: 40px 28px;
@@ -480,7 +391,6 @@ header {
   animation: fadeIn 0.5s ease;
 }
 
-/* Fade + slide up animation */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -561,18 +471,8 @@ header {
   color: var(--accent2);
 }
 
-
-/* ─────────────────────────────────────────────
-   13. QUIZ SCREEN (hidden initially)
-───────────────────────────────────────────── */
-
 #quiz-screen { display: none; }
 #quiz-screen.show { display: block; }
-
-
-/* ─────────────────────────────────────────────
-   14. FOOTER
-───────────────────────────────────────────── */
 
 footer {
   margin-top: 24px;
