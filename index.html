@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<!-- data-theme="light" is read by CSS to apply the right color variables -->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BrainSpark — GK Quiz</title>
+
+  <!-- Google Fonts: Share Tech Mono (techy headings) + Space Grotesk (body) -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+
+<body>
+  <header>
+    <!-- Logo: "Brain" in normal color, "Spark" in accent color via <span> -->
+    <div class="logo">Brain<span>Spark</span></div>
+
+    <!-- Dark/Light toggle button. onclick calls toggleTheme() in script.js -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+      <span class="toggle-icon">☀️</span>
+      <span id="theme-label">Light</span>
+      <!-- id="theme-label" is updated by JS when theme switches -->
+    </button>
+  </header>
+
+  <!-- ── MAIN CARD ─────────────────────────────────────── -->
+  <!-- All three screens live inside this card -->
+  <div class="card">
+
+
+    <!-- ── SCREEN 1: INTRO ────────────────────────────── -->
+    <!-- Shown first. Hidden by JS when quiz starts. -->
+    <div id="intro-screen">
+      <div class="intro-icon">🌍</div>
+      <div class="intro-title">General Knowledge Quiz</div>
+      <p class="intro-sub">
+        Test your knowledge across science, history, geography, and more.
+        10 questions, no time limit.
+      </p>
+
+      <!-- Info chips -->
+      <div class="intro-stats">
+        <span class="stat-chip">📋 10 Questions</span>
+        <span class="stat-chip">🎯 1 point each</span>
+        <span class="stat-chip">⚡ Instant feedback</span>
+      </div>
+
+      <!-- Start button — calls startQuiz() in script.js -->
+      <button class="btn-start" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+
+
+    <!-- ── SCREEN 2: QUIZ ─────────────────────────────── -->
+    <!-- Hidden initially. JS adds class="show" to display it. -->
+    <div id="quiz-screen">
+
+      <!-- Progress bar track. The inner div width is set by JS. -->
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+
+      <!-- "Question X of 10" + live score badge -->
+      <div class="quiz-meta">
+        <span class="q-counter" id="q-counter">Question 1 of 10</span>
+        <span class="score-badge">
+          Score: <strong id="score-display">0</strong>
+          <!-- id="score-display" is updated by JS after each correct answer -->
+        </span>
+      </div>
+
+      <!-- Question text. JS sets the text content here. -->
+      <div class="question-area">
+        <div class="question-text" id="question-text"></div>
+      </div>
+
+      <!-- Options container. JS creates 4 buttons here dynamically. -->
+      <div class="options" id="options-container"></div>
+
+      <!-- Feedback bar. JS sets class + text after answer is selected. -->
+      <div class="feedback" id="feedback"></div>
+
+      <!-- Next button. Hidden until answer is selected. -->
+      <div class="next-wrap" id="next-wrap">
+        <button class="next-btn" onclick="nextQuestion()">
+          <span id="next-label">Next Question</span>
+          <span>→</span>
+          <!-- JS changes "Next Question" to "See Results" on last question -->
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- ── SCREEN 3: RESULT ───────────────────────────── -->
+    <!-- Hidden until quiz ends. JS adds class="show" to display it. -->
+    <div id="result-screen">
+
+      <!-- Emoji changes based on score (🏆 🌟 👍 📚 💪) -->
+      <div class="result-emoji" id="result-emoji"></div>
+
+      <!-- Title changes based on score ("Perfect Score!", "Excellent!", etc.) -->
+      <div class="result-title" id="result-title"></div>
+
+      <!-- Shows "8 / 10" format -->
+      <div class="result-score">
+        <span id="final-score">0</span>
+        <span> / 10</span>
+      </div>
+
+      <!-- Motivational message based on score -->
+      <p class="result-message" id="result-message"></p>
+
+      <!-- Two action buttons -->
+      <div class="result-actions">
+        <!-- Retake — calls restartQuiz() to reset everything -->
+        <button class="btn-retake" onclick="restartQuiz()">🔁 Retake Quiz</button>
+
+        <!-- Share — calls shareScore() to copy score to clipboard -->
+        <button class="btn-share" onclick="shareScore()">📤 Share Score</button>
+      </div>
+
+    </div>
+
+  </div>
+  <!-- end .card -->
+
+  <!-- Footer -->
+  <footer>Built with ❤️ for DecodeLabs Frontend Internship · Project 3</footer>
+
+  <!-- Our JavaScript file — loaded at the bottom so HTML loads first -->
+  <script src="script.js"></script>
+
+</body>
+</html>

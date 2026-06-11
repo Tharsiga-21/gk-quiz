@@ -1,0 +1,582 @@
+/* ============================================
+   style.css — BrainSpark GK Quiz Styles
+   DecodeLabs Frontend Internship · Project 3
+   ============================================ */
+
+
+/* ─────────────────────────────────────────────
+   1. CSS VARIABLES (Theme System)
+   We define color "tokens" here so we can
+   switch between light and dark by just
+   changing these values. Every color in the
+   app uses these variables — never hardcoded.
+───────────────────────────────────────────── */
+
+/* Light theme — applied by default */
+:root {
+  --bg: #F0EDE6;           /* Page background */
+  --surface: #FFFFFF;      /* Card background */
+  --surface2: #F7F4EF;     /* Option button background */
+  --border: #E2DDD6;       /* Border color */
+  --text: #1A1714;         /* Main text */
+  --text-muted: #7A7570;   /* Lighter/secondary text */
+  --accent: #E8431A;       /* Primary accent (orange-red) */
+  --accent2: #2D6BE4;      /* Secondary accent (blue) */
+  --correct: #1E8A4A;      /* Green for correct answer */
+  --wrong: #D63B2F;        /* Red for wrong answer */
+  --correct-bg: #E8F7EE;   /* Light green background */
+  --wrong-bg: #FDECEA;     /* Light red background */
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+  --radius: 16px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark theme — applied when HTML has data-theme="dark" */
+[data-theme="dark"] {
+  --bg: #111110;
+  --surface: #1C1B1A;
+  --surface2: #252422;
+  --border: #333230;
+  --text: #F0EDE6;
+  --text-muted: #888480;
+  --accent: #FF5C33;
+  --accent2: #5B8FF9;
+  --correct: #34C26A;
+  --wrong: #F25C4F;
+  --correct-bg: #0D2B1A;
+  --wrong-bg: #2B0D0D;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+}
+
+
+/* ─────────────────────────────────────────────
+   2. RESET & BASE STYLES
+   Remove browser default margins/padding.
+   Set box-sizing so padding is included in
+   element width calculations.
+───────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box; /* width includes padding & border */
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;          /* Full screen height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;        /* Center everything horizontally */
+  padding: 24px 16px 48px;
+  transition: background var(--transition), color var(--transition);
+  /* transition makes dark/light switch smooth */
+}
+
+
+/* ─────────────────────────────────────────────
+   3. HEADER
+───────────────────────────────────────────── */
+
+header {
+  width: 100%;
+  max-width: 680px;           /* Never wider than 680px */
+  display: flex;
+  justify-content: space-between; /* Logo left, toggle right */
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.logo {
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: -0.03em;
+}
+
+.logo span {
+  color: var(--accent); /* "Spark" part is colored */
+}
+
+/* Dark/Light toggle button */
+.theme-toggle {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;       /* Pill shape */
+  padding: 8px 16px;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--transition);
+  box-shadow: var(--shadow);
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.toggle-icon {
+  font-size: 1rem;
+  transition: transform 0.4s;
+}
+
+/* Rotate the sun/moon icon when dark mode is on */
+[data-theme="dark"] .toggle-icon {
+  transform: rotate(180deg);
+}
+
+
+/* ─────────────────────────────────────────────
+   4. MAIN CARD
+───────────────────────────────────────────── */
+
+.card {
+  width: 100%;
+  max-width: 680px;
+  background: var(--surface);
+  border-radius: 24px;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;           /* Clips progress bar corners */
+  transition: background var(--transition), border-color var(--transition);
+}
+
+
+/* ─────────────────────────────────────────────
+   5. PROGRESS BAR
+   Shows how far through the quiz you are.
+───────────────────────────────────────────── */
+
+.progress-wrap {
+  height: 4px;
+  background: var(--border);  /* The grey track behind the bar */
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  /* width is set by JavaScript to show progress */
+  width: 0%;
+}
+
+
+/* ─────────────────────────────────────────────
+   6. QUIZ META (Question counter + Score badge)
+───────────────────────────────────────────── */
+
+.quiz-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 28px 0;
+}
+
+.q-counter {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.score-badge {
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  padding: 4px 14px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all var(--transition);
+}
+
+.score-badge strong {
+  color: var(--accent);
+  font-family: 'Share Tech Mono', monospace;
+}
+
+
+/* ─────────────────────────────────────────────
+   7. QUESTION TEXT
+───────────────────────────────────────────── */
+
+.question-area {
+  padding: 24px 28px 20px;
+}
+
+.question-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text);
+  min-height: 3.5rem; /* Prevents layout jumping between short/long questions */
+}
+
+
+/* ─────────────────────────────────────────────
+   8. OPTION BUTTONS
+   Each answer choice is a styled <button>.
+───────────────────────────────────────────── */
+
+.options {
+  padding: 0 28px 28px;
+  display: flex;
+  flex-direction: column; /* Stack options vertically */
+  gap: 10px;
+}
+
+.option-btn {
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover effect — slide right slightly */
+.option-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  transform: translateX(4px);
+  box-shadow: var(--shadow);
+}
+
+/* The A / B / C / D label box */
+.option-label {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;   /* Don't let it shrink */
+  transition: all 0.2s;
+}
+
+/* Label turns accent color on hover */
+.option-btn:hover:not(:disabled) .option-label {
+  background: var(--accent);
+  color: white;
+}
+
+/* GREEN — correct answer selected */
+.option-btn.correct {
+  background: var(--correct-bg);
+  border-color: var(--correct);
+  color: var(--correct);
+  transform: translateX(4px);
+}
+
+.option-btn.correct .option-label {
+  background: var(--correct);
+  color: white;
+}
+
+/* RED — wrong answer selected */
+.option-btn.wrong {
+  background: var(--wrong-bg);
+  border-color: var(--wrong);
+  color: var(--wrong);
+}
+
+.option-btn.wrong .option-label {
+  background: var(--wrong);
+  color: white;
+}
+
+/* After answering, disable all buttons */
+.option-btn:disabled {
+  cursor: default;
+  transform: none !important;
+}
+
+
+/* ─────────────────────────────────────────────
+   9. FEEDBACK BAR
+   Shows "Correct!" or "Wrong! The answer is X"
+───────────────────────────────────────────── */
+
+.feedback {
+  margin: 0 28px 20px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: none;          /* Hidden by default */
+  align-items: center;
+  gap: 8px;
+}
+
+/* JavaScript adds .show to make it visible */
+.feedback.show {
+  display: flex;
+  animation: slideIn 0.3s ease;
+}
+
+.feedback.correct-fb {
+  background: var(--correct-bg);
+  color: var(--correct);
+  border: 1px solid var(--correct);
+}
+
+.feedback.wrong-fb {
+  background: var(--wrong-bg);
+  color: var(--wrong);
+  border: 1px solid var(--wrong);
+}
+
+/* Slide down animation when feedback appears */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ─────────────────────────────────────────────
+   10. NEXT BUTTON
+───────────────────────────────────────────── */
+
+.next-wrap {
+  padding: 0 28px 28px;
+  display: none; /* Hidden until answer is selected */
+}
+
+.next-wrap.show {
+  display: block;
+}
+
+.next-btn {
+  width: 100%;
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius);
+  padding: 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.next-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+
+/* ─────────────────────────────────────────────
+   11. INTRO SCREEN
+───────────────────────────────────────────── */
+
+#intro-screen {
+  padding: 48px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.intro-icon { font-size: 3.5rem; }
+
+.intro-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.intro-sub {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 380px;
+}
+
+.intro-stats {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.stat-chip {
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.btn-start {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 16px 48px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.btn-start:hover {
+  opacity: 0.88;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+
+/* ─────────────────────────────────────────────
+   12. RESULT SCREEN
+───────────────────────────────────────────── */
+
+#result-screen {
+  display: none;
+  padding: 40px 28px;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+#result-screen.show {
+  display: flex;
+  animation: fadeIn 0.5s ease;
+}
+
+/* Fade + slide up animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.result-emoji { font-size: 4rem; line-height: 1; }
+
+.result-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.result-score {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+}
+
+.result-score span {
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.result-message {
+  font-size: 1rem;
+  color: var(--text-muted);
+  max-width: 360px;
+  line-height: 1.6;
+}
+
+.result-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.btn-retake {
+  flex: 1;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-retake:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.btn-share {
+  flex: 1;
+  background: var(--surface2);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-share:hover {
+  border-color: var(--accent2);
+  color: var(--accent2);
+}
+
+
+/* ─────────────────────────────────────────────
+   13. QUIZ SCREEN (hidden initially)
+───────────────────────────────────────────── */
+
+#quiz-screen { display: none; }
+#quiz-screen.show { display: block; }
+
+
+/* ─────────────────────────────────────────────
+   14. FOOTER
+───────────────────────────────────────────── */
+
+footer {
+  margin-top: 24px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+}
